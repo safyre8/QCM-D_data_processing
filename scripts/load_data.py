@@ -1,41 +1,48 @@
 import os
 import sys
+# import numpy as np
+import pandas as pd
 
-def load_data(n):
-    input_folder = os.path.join(os.path.normpath(sys.path[3]), "input")
-    file_path = os.path.join(input_folder, str(n) + "_" + "theta" + ".txt")
-    data = np.loadtxt(file_path, delimiter="\t")
-    return data
-    print("Data loaded")
-load_data(0)
+"""the function will load the files from the data folder as either 
+    qcm-d experiment in the "qcm_dir" or as a note file in the "note_dir"""""
 
-data_path = r"O:/PhD 2023/Data/qcm_se_all_excel/.csv/qcm/"  # data files, with colunms: time, f, d for x# of chambers
-data_note_path = r"O:/PhD 2023/Data/qcm_se_all_excel/.csv/notes/"  # notes files, with columns: time (min),  pump, stirrer, solution (SEPT_add/fb_wash)
+def load_data(folder_dir):
+    all_files = os.listdir(os.path.normpath(sys.path[1] + "/" + folder_dir))  # check that the system path is correct
 
-original_files = os.listdir(data_path)
-original_note_files = os.listdir(data_note_path)
+    # check the number of files with the tags
+    note_files = list(filter(lambda f: f.endswith('_notes.txt'), all_files))
+    qcm_txt_files = list(filter(lambda f: f.endswith('_slb.txt'), all_files))
+    num_note_files = len(note_files)
+    num_qcm_files = len(qcm_txt_files)
+    print(
+        "==== Found {} QCM-D and {} note file(s) in {} folder! ====".format(num_qcm_files, num_note_files, folder_dir))
 
-file_d = {}
-file_note = {}
+    qcm_dir = {}  # tag slb is for the support lipid bilayer
+    note_dir = {}  # tag note is for the notes taken during the experiments
 
-for file_name in original_files:
-    data_table = pd.read_csv(data_path + file_name)
-    file_d[file_name] = data_table
-    for key in file_d.keys():
-        print(key)
-        print(file_d[key].head(4))
-    print()
+    # goes through the files in the data folder to add them to the empty directories above
+    for file_name in all_files:
+        if file_name.endswith("_slb.txt"):
+            q_data_table = pd.read_csv(os.path.join(folder_dir, file_name), delimiter=";")
+            qcm_dir[file_name] = q_data_table
+            # for key in qcm_dir.keys():
+            #     print(key)
+            #     # print(qcm_dir[key].head(1))
+            # print()
 
-for file_note_name in original_note_files:
-    data_note_table = pd.read_csv(data_note_path + file_note_name)
-    file_note[file_note_name] = data_note_table
-    for key in file_note.keys():
-        print(key)
-        print(file_note[key].head(4))
+        if file_name.endswith("_notes.txt"):
+            n_data_table = pd.read_csv(os.path.join(folder_dir, file_name), delimiter=";")
+            note_dir[file_name] = n_data_table
 
-# present clear output from the imported data
-for key in file_d.keys():
-    print(key)
-    print(file_d[key].head(4))
-    print()
+    # checks the number of files in the directories to be able to compare to the number of files in the data folder
+    num_qcm_dir = len(qcm_dir)
+    num_note_dir = len(note_dir)
+    print("==== Found {} QCM-D and {} note file(s) in the directories! ====".format(num_qcm_dir, num_note_dir))
 
+    return qcm_dir, note_dir
+#TODO: clean up the output by figuring out how to prevent the printing of all the now open files
+
+# load_data("data")
+
+
+print("==== Loaded the experimental and note files! ====")
