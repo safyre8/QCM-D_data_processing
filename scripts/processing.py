@@ -34,11 +34,6 @@ def filter_data(dataset: pd.DataFrame) -> pd.DataFrame:
     print("==== Filtered for chamber {} and overtone {} in the file: '{}'! ====".format(c, n, filename))
     return filtered_table
 
-#
-# filter_c = filter_data(specific_qcm_file)
-#
-#
-# # %%
 def ave_slb_baseline(dataset: pd.DataFrame, t_base_s: float = 6., t_base_e: float = 8.):
     """Takes the filtered dataset to convert the time from seconds to minutes and average the frequency and dissipation from the SLB baseline."""
 
@@ -50,13 +45,9 @@ def ave_slb_baseline(dataset: pd.DataFrame, t_base_s: float = 6., t_base_e: floa
     rows_in_range = (time_min >= t_base_s) & (time_min <= t_base_e)
     data_in_range = dataset.loc[rows_in_range]
 
-    # TODO: Set a if and else statement for if the data is properly selected to find the averages/no data if found
-    # if data_in_range[]:
-
     f_avg = data_in_range.iloc[:, 1].mean()  # averaging over frequency
     d_avg = data_in_range.iloc[:, 2].mean()  # averaging over dissipation
-    # else:
-    # #     print ("zero rows in range")
+
     norm_f = (dataset.iloc[:, 1] - f_avg) / 5  # 5 is the scaling for overtone 5
     norm_d = dataset.iloc[:, 2] - d_avg
 
@@ -70,14 +61,10 @@ def ave_slb_baseline(dataset: pd.DataFrame, t_base_s: float = 6., t_base_e: floa
 
 def find_matching_notes(file_name: str):
     """This will find the matching note file (_note) for the data file (_slb)"""
-
     note_file_name = file_name.replace("slb", f"notes")
     notes_file = note_dir[file_name.replace("slb", f"notes")]
     return notes_file, note_file_name
-# c_value = 1  # Define c here or get it from somewhere
-# filename = "20230718_qcm_sept_slb.csv"
-# matching_notes = find_matching_notes(filename)
-# print(matching_notes)
+
 
 
 def eq_time_select(file_name: pd.DataFrame):
@@ -89,13 +76,14 @@ def eq_time_select(file_name: pd.DataFrame):
     # find the string of "SEPT_add" or "fb_wash" in the note dataframe to indicate the row that septins are add or washed
     condition_add = (notes_file['solution'] == "SEPT_add")
     condition_wash = (notes_file['solution'] == "fb_wash")
+
     # # The row that is noted from the pervious call
     index_add = notes_file.index[condition_add].tolist()
     index_wash = notes_file.index[condition_wash].tolist()
+
     # Find the time in the row with the solution as "SEPT_add" or "fb_wash"
     SEPT_s = notes_file.loc[index_add[0], 'time (min)']
     SEPT_e = notes_file.loc[index_wash[0], 'time (min)']
-
     n_SEPT_s = pd.to_numeric(SEPT_s)
     n_SEPT_e = pd.to_numeric(SEPT_e)
 
@@ -103,26 +91,24 @@ def eq_time_select(file_name: pd.DataFrame):
     print("==== Selected the data from the notes file for when protein (SEPT) was added to wash! ====")
     return filtered_df2
 
+def run(dataset: str):
+    """runs the script, making the final changes to set the time to start at zero and remove the slb signal from the frequency"""
 
-print(eq_time_select(filename))
+    data = eq_time_select(dataset)
+    time_zero = data.iloc[:, 0] - data.iloc[0, 0]
+    freq_zero = data.iloc[:, 1] - data.iloc[1, 1]
+    de_set = data.iloc[:, 2]
+    print(freq_zero)
 
+    final_table = pd.DataFrame(data={
+        'time (min)': time_zero,
+        'f (Hz)': freq_zero,
+        'd (ppm)': de_set
+    })
 
-# THIS WORKS FOR THE MULTIPLE CHANNELS!!!!!!!!!!!!
-# def run(work_file_name: str, c, n, sept_base_s: float = 6., sept_base_e: float = 8.):
-#     """This will take a data file and the matching note file to filter, average the solution, and select the time from adding septins to washing"""
-#
-#
-#     # file_load = pd.read_csv(data_path + work_file_name)  # load dataframe
-#     filtered = filter_data(work_file_name)  # filter for specific overtone and chamber
-#     # TODO: check that the baseline can change according to the notefile...
-#     base_data = ave_slb_baseline(filtered)  # normalize to a baseline
-#
-#     equal_sept = eq_time_select(work_file_name, n,
-#                                 c)  # selects for the time after septins are added to when they are washed
-#     return equal_sept
-#
-#
-# f_septin_time("20220920_all_n.csv", 5, 2)
+    return final_table
+print(run(filename))
+
 
 # TODO: make it so that all the chambers can be pulled out
 # TODO: make a directory to save all these files. Then average them.
