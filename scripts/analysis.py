@@ -5,24 +5,18 @@ filename = "20230718_qcm_sept_slb.csv"
 c = 1
 
 sept_run_dir = single_experiment_processed.run(filename, c)
-print(sept_run_dir)
-print(list(sept_run_dir))
-# # List to store 'time (min)' column data for each overtone
-# time_min_columns = []
-#
-# # Access 'time (min)' column for each overtone and store them in a list
-# for overtone, df in sept_run_dir.items():
-#     time_min_column = df['time (min)']
-#     time_min_columns.append(time_min_column)
-#
-# # Print the 'time (min)' columns for each overtone
-# for overtone, time_min_column in zip(sept_run_dir.keys(), time_min_columns):
-#     print(f"Time (min) for overtone {overtone}:\n{time_min_column}")
+# print(sept_run_dir)
+# print(list(sept_run_dir))
+
+
 
 def soft_p(dataset: pd.DataFrame):
-    # data_dir =
     # find the first and last value. subtract them
-    time_df = dataset['time (min)']
+    time_df = dataset.iloc[:, 1]
+    # print(time_df)
+    f_df = dataset['f (Hz)']
+    d_df = dataset['d (ppm)']
+    # print(f_df)
 
     #Average the last 10 values to get the average across the dataset
     last_f_values = dataset['f (Hz)'].iloc[-5:]
@@ -34,12 +28,25 @@ def soft_p(dataset: pd.DataFrame):
     soft = d_delta / - f_delta
     new_table = pd.DataFrame({
         'Time': time_df,
-        'Soft': soft
+        'Soft': soft,
+        'f (Hz)': f_df,
+        'd (ppm)': d_df
     })
     return new_table
-# divid the f and d
-soft_runner = soft_p(sept_run_dir)
-print(soft_runner)
+
+# # Iterate through the keys (overtones) in sept_run_dir
+# for overtone in [3, 5, 7]:
+#     # Check if the overtone exists in the directory
+#     if overtone in sept_run_dir:
+#         # Apply the soft_p function to the dataset corresponding to the overtone
+#         soft_runner = soft_p(sept_run_dir[overtone])
+#         print(f"Soft for overtone {overtone}:\n{soft_runner}")
+#     else:
+#         print(f"No data found for overtone {overtone}")
+
+# soft_runner = soft_p(sept_run_dir[3])
+# print(soft_runner)
+
 #
 # soft_para_dir = {}
 #

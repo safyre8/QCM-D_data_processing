@@ -12,7 +12,7 @@ from scripts.load_data import load_data
 
 qcm_dir, note_dir = load_data("data")
 
-# Set variables for the (c) chamber:int and (n) overtone:int
+# Set variables for the (c) chamber:int. The overtones are set for 3, 5, and 7.
 
 class single_experiment_processed:
     """" this class will run with one chamber and overtone number for a single file.
