@@ -21,6 +21,30 @@ class single_experiment_processed:
     and select the time from adding septins to washing"""
 
     @staticmethod
+    def run(dataset: str, c: int):
+        """runs the script, making the final changes to set the time to start at zero and remove the slb signal from the frequency"""
+        n_values = [3, 5, 7]
+
+        sept_run_dir = {}
+
+        # Iterate through different n values
+        for n in n_values:
+            data = single_experiment_processed.eq_time_select(dataset, c, n)
+            time_zero = data.iloc[:, 0] - data.iloc[0, 0]
+            freq_zero = data.iloc[:, 1] - data.iloc[1, 1]
+            de_set = data.iloc[:, 2]
+            final_table = pd.DataFrame(data={
+                'time (min)': time_zero,
+                'f (Hz)': freq_zero,
+                'd (ppm)': de_set
+            })
+            sept_run_dir[n] = final_table
+            # print(f"Result for n = {n}:", final_table)
+        num = list(sept_run_dir)
+        print("==== Finished by converting the time and frequency to start at zero for overtones {}! ====".format(num))
+        return sept_run_dir
+
+    @staticmethod
     def filter_data(dataset: pd.DataFrame, c: int, n: int) -> pd.DataFrame:
         """Takes a csv file to seperate out the time(Time), frequency (f), and dissipation (D) for a chamber (c) at the Harmonic of interest (n) to give an array with these columns"""
         # load the dataframe from the experimental directory
@@ -93,26 +117,13 @@ class single_experiment_processed:
         print("==== Selected the data from the notes file for when protein (SEPT) was added to wash! ====")
         return filtered_df2
 
-    @staticmethod
-    def run(dataset: str, c: int, n: int):
-        """runs the script, making the final changes to set the time to start at zero and remove the slb signal from the frequency"""
-        data = single_experiment_processed.eq_time_select(dataset, c, n)
-        time_zero = data.iloc[:, 0] - data.iloc[0, 0]
-        freq_zero = data.iloc[:, 1] - data.iloc[1, 1]
-        de_set = data.iloc[:, 2]
 
-        final_table = pd.DataFrame(data={
-            'time (min)': time_zero,
-            'f (Hz)': freq_zero,
-            'd (ppm)': de_set
-        })
-        print("==== Finished by converting the time and frequency to start at zero! ====")
-        return final_table
 
-#
+#How to call processing
 # filename = "20230718_qcm_sept_slb.csv"
-# c = 2
-# n = 7
+# c = 1
 #
-# result = single_experiment_processed.run(filename, c, n)
-# print(result)
+# df = single_experiment_processed.run(filename, c)
+# print(df)
+# print(soft_p(df))
+# print(soft_p(filename, c, n))
