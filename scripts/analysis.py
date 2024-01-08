@@ -46,8 +46,8 @@ def soft_p(dataset: pd.DataFrame):
 
     return soft_para_dir
 
-# soft_runner = soft_p(sept_run_dir)
-# print(soft_runner)
+soft_runner = soft_p(sept_run_dir)
+print(soft_runner)
 
 
 def Sauerbrey_M(dataset: pd.DataFrame, c, n):
