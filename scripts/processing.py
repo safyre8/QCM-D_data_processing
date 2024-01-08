@@ -23,7 +23,7 @@ class single_experiment_processed:
     @staticmethod
     def run(dataset: str, c: int):
         """runs the script, making the final changes to set the time to start at zero and remove the slb signal from the frequency"""
-        n_values = [3, 5, 7]
+        n_values = [3, 5, 7, 9]
 
         sept_run_dir = {}
 
@@ -65,7 +65,7 @@ class single_experiment_processed:
 
         time_sec = dataset.iloc[:, 0]  # takes the first row from the filter_data, which is always time
         time_min = (time_sec / 60).round(2)  # convert the time into minutes
-        print("==== Converted the time from seconds into minutes! ====")
+        # print("==== Converted the time from seconds into minutes! ====")
 
         # set a range to find the average to normalize the frequency and dissipation channels across the entire dataset
         rows_in_range = (time_min >= t_base_s) & (time_min <= t_base_e)

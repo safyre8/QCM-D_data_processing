@@ -12,9 +12,9 @@ def load_data(folder_dir):
     # check the number of files with the tags
     note_files = list(filter(lambda f: f.endswith('_notes.csv'), all_files))
     qcm_txt_files = list(filter(lambda f: f.endswith('_slb.csv'), all_files))
-    num_note_files = len(note_files)
-    num_qcm_files = len(qcm_txt_files)
-    print("==== Found {} QCM-D and {} note file(s) in {} folder! ====".format(num_qcm_files, num_note_files, folder_dir))
+    # num_note_files = len(note_files)
+    # num_qcm_files = len(qcm_txt_files)
+    # print("==== Found {} QCM-D and {} note file(s) in {} folder! ====".format(num_qcm_files, num_note_files, folder_dir))
 
     qcm_dir = {}  # tag slb is for the support lipid bilayer
     note_dir = {}  # tag note is for the notes taken during the experiments
@@ -42,6 +42,7 @@ def load_data(folder_dir):
 #TODO: clean up the output by figuring out how to prevent the printing of all the now open files
 
 # load_data("data")
+
 
 
 print("==== Loaded the experimental and note files! ====")
