@@ -51,7 +51,7 @@ def plot_f(directory):
     # plt.savefig(save_path + 'all_combined_qcm-d.pdf', format='pdf')
     plt.show()
 
-# plot_f(sept_soft_dir)
+plot_f(sept_soft_dir)
 
 def plot_d(directory):
     """"Will plot all the files in a directory for the softness parameters vs delta F"""
@@ -103,8 +103,7 @@ def plot_d(directory):
 
 
 def plot_soft(directory):
-    """"Will plot an individual file for the softness parameters vs delta F"""
-
+    """"Will plot the directory for overtones (3, 5, 7, 9) for the softness parameters vs delta F"""
     fig, ax = plt.subplots()
     cmap = plt.get_cmap("Reds")
     color_index = 0
