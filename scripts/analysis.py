@@ -23,7 +23,7 @@ def soft_p(dataset: pd.DataFrame):
         if overtone in dataset:
             time_df = dataset[overtone]['time (min)']
             f_df = dataset[overtone]['f (Hz)']
-            d_df = dataset[overtone]['d (ppm)']
+            d_df = dataset[overtone]['d (ppm)']* 10**-6
 
             last_f_values = f_df.iloc[-5:]
             last_d_values = d_df.iloc[-5:]
@@ -37,7 +37,7 @@ def soft_p(dataset: pd.DataFrame):
                 'time (min)': time_df,
                 'Soft': soft,
                 'f (Hz)': f_df,
-                'd (ppm)': d_df
+                'd (10^-6)': d_df
             })
             soft_para_dir[overtone] = new_table
             print(f"Soft for overtone {overtone}:\n{soft}")  # Print softness values for current overtone
@@ -59,7 +59,7 @@ def soft_p_overall(dataset: pd.DataFrame, n_values):
         if overtone in dataset:
             #select the columns for the frequency and disipation
             f_df = dataset[overtone]['f (Hz)']
-            d_df = dataset[overtone]['d (ppm)']
+            d_df = dataset[overtone]['d (ppm)'] * 10**-6
             print(d_df)
 
             #select the first value of each column
