@@ -103,8 +103,7 @@ plot_d(sept_run_dir)
 
 
 def plot_soft(directory):
-    """"Will plot an individual file for the softness parameters vs delta F"""
-
+    """"Will plot the directory for overtones (3, 5, 7, 9) for the softness parameters vs delta F"""
     fig, ax = plt.subplots()
     cmap = plt.get_cmap("Reds")
     color_index = 0

@@ -16,9 +16,11 @@ c = 4
 sept_run_dir = single_experiment_processed.run(filename, c)
 
 n_values = [3, 5, 7, 9]
-soft_para_dir = {}
+
 
 def soft_p(dataset: pd.DataFrame):
+    soft_para_dir = {}
+
     for overtone in n_values:
         if overtone in dataset:
             time_df = dataset[overtone]['time (min)']
@@ -41,6 +43,7 @@ def soft_p(dataset: pd.DataFrame):
             })
             soft_para_dir[overtone] = new_table
             print(f"Soft for overtone {overtone}:\n{soft}")  # Print softness values for current overtone
+            print(f_df)
         else:
             print(f"No data found for overtone {overtone}")
 
@@ -49,6 +52,40 @@ def soft_p(dataset: pd.DataFrame):
 soft_runner = soft_p(sept_run_dir)
 print(soft_runner)
 
+def soft_p_overall(dataset: pd.DataFrame, n_values):
+    """Calculate the criterion to determine if the film is sufficently thin for the Sauerbrey equation"""
+
+    soft_per_overtone = {}
+
+    for overtone in n_values:
+        if overtone in dataset:
+            #select the columns for the frequency and disipation
+            f_df = dataset[overtone]['f (Hz)']
+            d_df = dataset[overtone]['d (ppm)']
+
+            #select the first value of each column
+            first_f_value = f_df.iloc[0]
+            first_d_value = d_df.iloc[0]
+
+            #sum the last 5 values for each column
+            last_f_values = sum(f_df.iloc[-5:]) / 5
+            last_d_values = sum(d_df.iloc[-5:]) / 5
+
+            #calculate the difference between the first value and the average of the last 5
+            f_delta = last_f_values - first_f_value
+            d_delta = last_d_values - first_d_value
+
+            #calculate the criterion for each overtone
+            divid_f = f_delta / overtone
+            soft = d_delta / - divid_f
+            soft_per_overtone[overtone] = soft
+        else:
+            print(f"No data found for overtone {overtone}")
+
+    return soft_per_overtone
+
+soft_num = soft_p_overall(sept_run_dir, n_values)
+print(soft_num)
 
 def soft_p_overall(dataset: pd.DataFrame, n_values):
     """Calculate the criterion to determine if the film is sufficently thin for the Sauerbrey equation"""
