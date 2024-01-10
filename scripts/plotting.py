@@ -16,7 +16,7 @@ qcm_dir, note_dir = load_data("data")
 # print(list(qcm_dir))
 
 filename = "20230718_qcm_sept_slb.csv"
-c = 1
+c = 4
 n_values = [3, 5, 7, 9]
 sept_run_dir = single_experiment_processed.run(filename, c)
 sept_soft_dir = soft_p(sept_run_dir)
@@ -51,7 +51,7 @@ def plot_f(directory):
     # plt.savefig(save_path + 'all_combined_qcm-d.pdf', format='pdf')
     plt.show()
 
-# plot_f(sept_soft_dir)
+plot_f(sept_soft_dir)
 
 def plot_d(directory):
     """"Will plot all the files in a directory for the softness parameters vs delta F"""
@@ -71,7 +71,7 @@ def plot_d(directory):
 
     # Customization of the plot
     ax.set_xlabel('Time (min)')
-    ax.set_ylabel('-ΔD (ppm)')
+    ax.set_ylabel('ΔD (ppm)')
     ax.grid(False)
     plt.xlim((0))
     plt.ylim((0))
@@ -80,7 +80,7 @@ def plot_d(directory):
     # plt.savefig(save_path + 'all_combined_qcm-d.pdf', format='pdf')
     plt.show()
 
-# plot_d(sept_run_dir)
+plot_d(sept_run_dir)
 
 
 # print(soft_runner.keys())
@@ -171,7 +171,7 @@ def plot_double_y_data(filename: pd.DataFrame):
 
     return plt.show()
 
-# plot_double_y_data(sept_run_dir_3)
+plot_double_y_data(sept_run_dir_3)
 #
 #
 # def plot_all(directory_path):
