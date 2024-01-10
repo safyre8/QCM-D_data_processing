@@ -126,4 +126,4 @@ class single_experiment_processed:
 # df = single_experiment_processed.run(filename, c)
 # print(df)
 # print(soft_p(df))
-# print(soft_p(filename, c, n))
+print(soft_p(filename, c, n))
