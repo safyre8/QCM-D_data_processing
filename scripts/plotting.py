@@ -15,6 +15,7 @@ qcm_dir, note_dir = load_data("data")
 # print(qcm_dir)
 # print(list(qcm_dir))
 
+# to get an overview for one file
 filename = "20230718_qcm_sept_slb.csv"
 c = 4
 n_values = [3, 5, 7, 9]
@@ -51,7 +52,7 @@ def plot_f(directory):
     # plt.savefig(save_path + 'all_combined_qcm-d.pdf', format='pdf')
     plt.show()
 
-plot_f(sept_soft_dir)
+
 
 def plot_d(directory):
     """"Will plot all the files in a directory for the softness parameters vs delta F"""
@@ -80,26 +81,11 @@ def plot_d(directory):
     # plt.savefig(save_path + 'all_combined_qcm-d.pdf', format='pdf')
     plt.show()
 
-plot_d(sept_run_dir)
 
 
 # print(soft_runner.keys())
 
-# # Iterate through the files in the directory
-# hex_files = []  # To store files with "hex" in the filename
-# oct_files = []  # To store files with "oct" in the filename
-#
-# for filename in file_d:
-#     if "hex" in filename:
-#         hex_files.append(filename)
-#     if "oct" in filename:
-#         oct_files.append(filename)
 
-#     # to sort the files as hexamers or octamers
-#     id_h = 'hex'
-#     id_o = 'oct'
-
-# print(hex_files)
 
 
 def plot_soft(directory):
@@ -109,7 +95,7 @@ def plot_soft(directory):
     color_index = 0
 
     for n, df in directory.items():
-        print(df.columns)
+        # print(df.columns)
         x = - df['f (Hz)']
         y = df['Soft']
 
@@ -124,8 +110,8 @@ def plot_soft(directory):
     ax.plot(x, y, color='#000000')
     # ax.plot(x, y, color='#000000', label=filename)
     # ax.tick_params(axis='y')
-    plt.xlim((0.0))
-    plt.ylim((0))
+    plt.xlim((0.0, 100))
+    plt.ylim((0, .0000005))
 
     # overall graph edits
     ax.grid(False)
@@ -133,8 +119,6 @@ def plot_soft(directory):
     plt.show()
     # save plot
     # plt.savefig(save_path + filename + '_softness.pdf', format='pdf')
-
-plot_soft(sept_soft_dir)
 
 def plot_double_y_data(filename: pd.DataFrame):
     """Plots the data with the time vs frequency and dissipation for 1 dataset"""
@@ -170,9 +154,11 @@ def plot_double_y_data(filename: pd.DataFrame):
 
     return plt.show()
 
-plot_double_y_data(sept_run_dir_3)
-#
-#
+#TODO: make this function - plot_double_y_data("name") - work for the overtone 5 from data_protein folder
+
+
+
+
 # def plot_all(directory_path):
 #     """This will take and plot all of the files in the directory if they are hexamers or octamers"""
 #
@@ -275,3 +261,18 @@ plot_double_y_data(sept_run_dir_3)
 #
 # plot_f(qcm_dir)
 
+# # Iterate through the files in the directory
+# hex_files = []  # To store files with "hex" in the filename
+# oct_files = []  # To store files with "oct" in the filename
+#
+# for filename in file_d:
+#     if "hex" in filename:
+#         hex_files.append(filename)
+#     if "oct" in filename:
+#         oct_files.append(filename)
+
+#     # to sort the files as hexamers or octamers
+#     id_h = 'hex'
+#     id_o = 'oct'
+
+# print(hex_files)

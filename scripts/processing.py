@@ -1,3 +1,6 @@
+import os
+import sys
+
 import pandas as pd
 import numpy as np
 from scripts.load_data import load_data
@@ -10,9 +13,10 @@ from scripts.load_data import load_data
 # TODO: do all the data for the datasets
 
 
-qcm_dir, note_dir = load_data("data")
 
-# Set variables for the (c) chamber:int. The overtones are set for 3, 5, and 7.
+qcm_dir, note_dir = load_data("data")
+# save_dir = os.path.normpath(sys.path[1] + "/" + "data" + "/" + "data_protein")
+# Set variables for the (c) chamber:int. The overtones are set for 3, 5, 7, and 9.
 
 class single_experiment_processed:
     """" this class will run with one chamber and overtone number for a single file.
@@ -39,8 +43,12 @@ class single_experiment_processed:
                 'd (ppm)': de_set
             })
             sept_run_dir[n] = final_table
+            # new_file_name = f"{dataset[0:-4]}_{c}_{n}.csv"
+            # sept_run_dir[n].to_csv(os.path.join(save_dir, new_file_name), index=False)
+
             # print(f"Result for n = {n}:", final_table)
         num = list(sept_run_dir)
+
         print("==== Finished by converting the time and frequency to start at zero for overtones {}! ====".format(num))
         return sept_run_dir
 
@@ -120,10 +128,10 @@ class single_experiment_processed:
 
 
 #How to call processing
-# filename = "20230718_qcm_sept_slb.csv"
-# c = 1
-#
-# df = single_experiment_processed.run(filename, c)
-# print(df)
+filename = "20230718_qcm_sept_slb.csv"
+c = 4
+
+df = single_experiment_processed.run(filename, c)
+print(df)
 # print(soft_p(df))
 # print(soft_p(filename, c, n))

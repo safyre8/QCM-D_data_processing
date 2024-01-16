@@ -1,21 +1,7 @@
 import pandas as pd
-from scripts.processing import single_experiment_processed
 
-filename = "20230718_qcm_sept_slb.csv"
-c = 1
-
-sept_run_dir = single_experiment_processed.run(filename, c)
-# print(sept_run_dir)
-# print(list(sept_run_dir))
-
-filename = "20230718_qcm_sept_slb.csv"
-c = 4
-
-sept_run_dir = single_experiment_processed.run(filename, c)
 
 n_values = [3, 5, 7, 9]
-
-
 def soft_p(dataset: pd.DataFrame):
     soft_para_dir = {}
 
@@ -24,7 +10,7 @@ def soft_p(dataset: pd.DataFrame):
             time_df = dataset[overtone]['time (min)']
             f_df = dataset[overtone]['f (Hz)']
             d_df = dataset[overtone]['d (ppm)']* 10**-6
-
+            print(d_df)
             last_f_values = f_df.iloc[-5:]
             last_d_values = d_df.iloc[-5:]
 
@@ -46,9 +32,6 @@ def soft_p(dataset: pd.DataFrame):
             print(f"No data found for overtone {overtone}")
 
     return soft_para_dir
-
-# soft_runner = soft_p(sept_run_dir)
-# print(soft_runner)
 
 def soft_p_overall(dataset: pd.DataFrame, n_values):
     """Calculate the criterion to determine if the film is sufficently thin for the Sauerbrey equation"""
@@ -82,8 +65,7 @@ def soft_p_overall(dataset: pd.DataFrame, n_values):
 
     return soft_per_overtone
 
-# soft_num = soft_p_overall(sept_run_dir, n_values)
-# print(soft_num)
+
 
 def soft_p_overall(dataset: pd.DataFrame, n_values):
     """Calculate the criterion to determine if the film is sufficently thin for the Sauerbrey equation"""
@@ -117,10 +99,6 @@ def soft_p_overall(dataset: pd.DataFrame, n_values):
 
     return soft_per_overtone
 
-# soft_num = soft_p_overall(sept_run_dir, n_values)
-# print(soft_num)
-
-
 def Sauerbrey_M_overall(dataset: pd.DataFrame, c):
     """Areal mass density from the QCM-D calculated from the change from first f value to average of last 50 values"""
     # df = single_experiment_processed.run(dataset, c)
@@ -132,9 +110,7 @@ def Sauerbrey_M_overall(dataset: pd.DataFrame, c):
 
     return -SC * f_delta/5 #5 is the overtone
 
-print(Sauerbrey_M_overall(sept_run_dir[5], c))
-# soft_runner = soft_p(sept_run_dir)
-# print(soft_runner)
+
 
 def Sauerbrey_M_change(dataset: pd.DataFrame, c):
     """Areal mass density from the QCM-D over time"""
@@ -143,7 +119,7 @@ def Sauerbrey_M_change(dataset: pd.DataFrame, c):
     f_delta = dataset['f (Hz)']
     return -SC * f_delta/5 #5 is the overtone
 
-print(Sauerbrey_M_change(sept_run_dir[5], c))
+
 
 def Sauerbrey_H(dataset):
     SC = 18  # ng/(cm2∙ Hz) is the mass sensitivity constant for a 5 MHz crystal

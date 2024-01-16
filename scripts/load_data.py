@@ -8,14 +8,6 @@ import pandas as pd
 
 def load_data(folder_dir):
     all_files = os.listdir(os.path.normpath(sys.path[1] + "/" + folder_dir))  # check that the system path is correct
-
-    # check the number of files with the tags
-    note_files = list(filter(lambda f: f.endswith('_notes.csv'), all_files))
-    qcm_txt_files = list(filter(lambda f: f.endswith('_slb.csv'), all_files))
-    # num_note_files = len(note_files)
-    # num_qcm_files = len(qcm_txt_files)
-    # print("==== Found {} QCM-D and {} note file(s) in {} folder! ====".format(num_qcm_files, num_note_files, folder_dir))
-
     qcm_dir = {}  # tag slb is for the support lipid bilayer
     note_dir = {}  # tag note is for the notes taken during the experiments
 
@@ -24,10 +16,6 @@ def load_data(folder_dir):
         if file_name.endswith("_slb.csv"):
             q_data_table = pd.read_csv(os.path.join(folder_dir, file_name), delimiter=",")
             qcm_dir[file_name] = q_data_table
-            # for key in qcm_dir.keys():
-            #     print(key)
-            #     # print(qcm_dir[key].head(1))
-            # print()
 
         if file_name.endswith("_notes.csv"):
             n_data_table = pd.read_csv(os.path.join(folder_dir, file_name), delimiter=",")
@@ -46,3 +34,5 @@ def load_data(folder_dir):
 
 
 print("==== Loaded the experimental and note files! ====")
+
+
