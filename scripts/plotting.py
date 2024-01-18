@@ -110,8 +110,8 @@ def plot_soft(directory):
     ax.plot(x, y, color='#000000')
     # ax.plot(x, y, color='#000000', label=filename)
     # ax.tick_params(axis='y')
-    plt.xlim((0.0, 100))
-    plt.ylim((0, .0000005))
+    plt.xlim((0.0, 55))
+    plt.ylim((0, 8))
 
     # overall graph edits
     ax.grid(False)

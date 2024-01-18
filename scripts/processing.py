@@ -43,8 +43,8 @@ class single_experiment_processed:
                 'd (ppm)': de_set
             })
             sept_run_dir[n] = final_table
-            # new_file_name = f"{dataset[0:-4]}_{c}_{n}.csv"
-            # sept_run_dir[n].to_csv(os.path.join(save_dir, new_file_name), index=False)
+            new_file_name = f"{dataset[0:-4]}_{c}_{n}.csv"
+            sept_run_dir[n].to_csv(os.path.join(save_dir, new_file_name), index=False)
 
             # print(f"Result for n = {n}:", final_table)
         num = list(sept_run_dir)
@@ -82,7 +82,7 @@ class single_experiment_processed:
         f_avg = data_in_range.iloc[:, 1].mean()  # averaging over frequency
         d_avg = data_in_range.iloc[:, 2].mean()  # averaging over dissipation
 
-        norm_f = (dataset.iloc[:, 1] - f_avg) / 5  # 5 is the scaling for overtone 5
+        norm_f = (dataset.iloc[:, 1] - f_avg) # 5 is the scaling for overtone 5
         norm_d = dataset.iloc[:, 2] - d_avg
 
         norm_table = pd.DataFrame(data={

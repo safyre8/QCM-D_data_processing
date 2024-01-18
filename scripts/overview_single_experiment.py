@@ -18,10 +18,10 @@ print(analysis.soft_p_overall(sept_run_dir, n_values))
 
 
 # """"running for a single file with the overtones.""""
-plotting.plot_double_y_data(sept_run_dir[5]) #overtone [3, 5, 7, 9]
-
+# plotting.plot_double_y_data(sept_run_dir[5]) #overtone [3, 5, 7, 9]
+#
 plotting.plot_d(sept_run_dir)
 plotting.plot_f(sept_run_dir)
-
-sept_soft_dir = analysis.soft_p(sept_run_dir)
-plotting.plot_soft(sept_soft_dir)
+#
+# sept_soft_dir = analysis.soft_p(sept_run_dir)
+# plotting.plot_soft(sept_soft_dir)
