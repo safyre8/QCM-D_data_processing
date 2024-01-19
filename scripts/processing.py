@@ -2,9 +2,8 @@ import os
 import sys
 
 import pandas as pd
-import numpy as np
 from scripts.load_data import load_data
-
+# from scripts.overview_single_experiment import filename, c
 # TODO: make it so that all the chambers can be pulled out
 # TODO: make a directory to save all these files. Then average them.
 # TODO: can I make a table with all the saved information about the chambers.
@@ -13,9 +12,9 @@ from scripts.load_data import load_data
 # TODO: do all the data for the datasets
 
 
-
 qcm_dir, note_dir = load_data("data")
-# save_dir = os.path.normpath(sys.path[1] + "/" + "data" + "/" + "data_protein")
+# print(qcm_dir)
+save_dir = os.path.normpath(sys.path[1] + "/" + "data" + "/" + "data_protein")
 # Set variables for the (c) chamber:int. The overtones are set for 3, 5, 7, and 9.
 
 class single_experiment_processed:
@@ -56,14 +55,16 @@ class single_experiment_processed:
     def filter_data(dataset: pd.DataFrame, c: int, n: int) -> pd.DataFrame:
         """Takes a csv file to seperate out the time(Time), frequency (f), and dissipation (D) for a chamber (c) at the Harmonic of interest (n) to give an array with these columns"""
         # load the dataframe from the experimental directory
-        new_df =  qcm_dir[dataset]
-
+        new_df = qcm_dir[dataset]
+        # print(new_df)
         desired_columns = [
             f"Time_{c} [s]",
             f"f{n}_{c} [Hz]",
             f"D{n}_{c} [ppm]"
         ]
         filtered_table = new_df[desired_columns]
+
+        print(filtered_table)
         print("==== Filtered for chamber {} and overtone {} in the file: '{}'! ====".format(c, n, dataset))
         return filtered_table
 
@@ -106,7 +107,7 @@ class single_experiment_processed:
         # load and define the 2 datasets. The data file comes from the experimental data.
         data_file = single_experiment_processed.ave_slb_baseline(single_experiment_processed.filter_data(dataset, c, n))
         notes_file, note_file_name = single_experiment_processed.find_matching_notes(dataset)
-
+        print(f"{notes_file} as sept_start")
         # find the string of "SEPT_add" or "fb_wash" in the note dataframe to indicate the row that septins are add or washed
         condition_add = (notes_file['solution'] == "SEPT_add")
         condition_wash = (notes_file['solution'] == "fb_wash")
@@ -117,7 +118,9 @@ class single_experiment_processed:
 
         # Find the time in the row with the solution as "SEPT_add" or "fb_wash"
         SEPT_s = notes_file.loc[index_add[0], 'time (min)']
+
         SEPT_e = notes_file.loc[index_wash[0], 'time (min)']
+
         n_SEPT_s = pd.to_numeric(SEPT_s)
         n_SEPT_e = pd.to_numeric(SEPT_e)
 
@@ -128,10 +131,10 @@ class single_experiment_processed:
 
 
 #How to call processing
-filename = "20230718_qcm_sept_slb.csv"
-c = 4
-
-df = single_experiment_processed.run(filename, c)
-print(df)
+# filename = "20230711_b_flow_slb.csv"
+# c = 4
+# print(filename)
+# df = single_experiment_processed.run(filename, c)
+# print(df)
 # print(soft_p(df))
 # print(soft_p(filename, c, n))

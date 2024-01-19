@@ -1,9 +1,10 @@
 import pandas as pd
 from scripts.processing import single_experiment_processed
+# from scripts.overview_single_experiment import filename, c
+# filename = "20230718_qcm_sept_slb.csv"
+# c = 1 #change for chamber [1, 2, 3, 4]
 
-filename = "20230718_qcm_sept_slb.csv"
-c = 1 #change for chamber [1, 2, 3, 4]
-sept_run_dir = single_experiment_processed.run(filename, c)
+# sept_run_dir = single_experiment_processed.run(filename, c)
 n_values = [3, 5, 7, 9]
 
 # n_values = [3, 5, 7, 9]
@@ -12,15 +13,10 @@ def soft_p(dataset: pd.DataFrame):
 
     for overtone in n_values:
         if overtone in dataset:
+            #TODO: Figure out if the overtone is normalized
             time_df = dataset[overtone]['time (min)']
             f_df = dataset[overtone]['f (Hz)']
             d_df = dataset[overtone]['d (ppm)']
-            # last_f_values = f_df.iloc[-5:]
-            # last_d_values = d_df.iloc[-5:]
-            #
-            # f_delta = f_df.iloc[:-1] - last_f_values.mean()
-            # d_delta = d_df.iloc[:-1] - last_d_values.mean()
-            # divid_f = -f_delta / overtone
 
             soft = d_df / (-f_df )
             new_table = pd.DataFrame({
@@ -123,6 +119,6 @@ def Sauerbrey_H(dataset):
     f_delta = dataset['f (Hz)']
     return f_delta * -(SC/(5*p))
 
-print(soft_p_overall(sept_run_dir, n_values))
+# print(soft_p_overall(sept_run_dir, n_values))
 
 # print(Sauerbrey_H(sept_run_dir[5]))

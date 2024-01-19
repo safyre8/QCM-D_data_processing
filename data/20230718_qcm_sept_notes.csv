@@ -1,9 +1,9 @@
-,time (min),pump,stirrer,solution
-0,0,20,none,fb
-1,10,20,none,naci
-2,35,20,none,suv
-3,60,20,none,naci
-4,70,20,none,fb
-5,175,20,none,SEPT_add
-6,207,20,none,fb_wash
-7,260,20,none,sb
+time (min),pump,stirrer,solution
+0,20,none,fb
+10,20,none,naci
+35,20,none,suv
+60,20,none,naci
+70,20,none,fb
+175,20,none,SEPT_add
+207,20,none,fb_wash
+260,20,none,sb

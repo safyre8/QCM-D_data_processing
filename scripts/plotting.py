@@ -1,26 +1,20 @@
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib as mpl
-
-# import matplotlib.cm as cm
-# from matplotlib import colormaps
-# print(list(colormaps))
 
 from scripts.load_data import load_data
 from scripts.processing import single_experiment_processed
 from scripts.analysis import soft_p
 
+
 qcm_dir, note_dir = load_data("data")
-# print(qcm_dir)
-# print(list(qcm_dir))
+
 
 # to get an overview for one file
-filename = "20230718_qcm_sept_slb.csv"
-c = 4
-n_values = [3, 5, 7, 9]
-sept_run_dir = single_experiment_processed.run(filename, c)
-sept_soft_dir = soft_p(sept_run_dir)
+# filename = "20230718_qcm_sept_slb.csv"
+# c = 4
+# n_values = [3, 5, 7, 9]
+# sept_run_dir = single_experiment_processed.run(filename, c)
+# sept_soft_dir = soft_p(sept_run_dir)
 # print(sept_soft_dir)
 
 

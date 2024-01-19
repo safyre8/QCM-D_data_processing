@@ -1,11 +1,25 @@
 import os
 import sys
-# import numpy as np
 import pandas as pd
 
+# from scripts.overview_single_experiment import filename,c
 """the function will load the files from the data folder as either 
     qcm-d experiment in the "qcm_dir" or as a note file in the "note_dir"""""
 
+def convert_files(folder_dir):
+    folder_path = os.path.normpath(os.path.join(sys.path[1], folder_dir))
+    all_files = os.listdir(folder_path)
+
+    for file_name in all_files:
+        file_path = os.path.join(folder_path, file_name)
+
+        if file_name.endswith(".xlsx"):
+            data = pd.read_excel(file_path)
+            data.to_csv(os.path.join(folder_path, file_name[:-5] + ".csv"), index=False, sep=",")
+        elif file_name.endswith(".txt"):
+            data = pd.read_csv(file_path, sep=';')  # Assuming it's a tab-separated text file
+            data.to_csv(os.path.join(folder_path, file_name[:-4] + ".csv"), index=False, sep=",")
+# print(convert_files("data"))
 def load_data(folder_dir):
     all_files = os.listdir(os.path.normpath(sys.path[1] + "/" + folder_dir))  # check that the system path is correct
     qcm_dir = {}  # tag slb is for the support lipid bilayer
@@ -29,7 +43,7 @@ def load_data(folder_dir):
     return qcm_dir, note_dir
 #TODO: clean up the output by figuring out how to prevent the printing of all the now open files
 
-# load_data("data")
+# print(load_data("data"))
 
 
 
