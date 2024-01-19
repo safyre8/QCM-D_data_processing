@@ -46,8 +46,6 @@ def plot_f(directory):
     # plt.savefig(save_path + 'all_combined_qcm-d.pdf', format='pdf')
     plt.show()
 
-
-
 def plot_d(directory):
     """"Will plot all the files in a directory for the softness parameters vs delta F"""
     # Create a figure to plot the files
@@ -75,13 +73,6 @@ def plot_d(directory):
     # plt.savefig(save_path + 'all_combined_qcm-d.pdf', format='pdf')
     plt.show()
 
-
-
-# print(soft_runner.keys())
-
-
-
-
 def plot_soft(directory):
     """"Will plot the directory for overtones (3, 5, 7, 9) for the softness parameters vs delta F"""
     fig, ax = plt.subplots()
@@ -102,8 +93,6 @@ def plot_soft(directory):
     ax.set_xlabel('-ΔF (Hz)')
     ax.set_ylabel('ΔD/(-ΔF/n) (Hz)')
     ax.plot(x, y, color='#000000')
-    # ax.plot(x, y, color='#000000', label=filename)
-    # ax.tick_params(axis='y')
     plt.xlim((0.0, 55))
     plt.ylim((0, 8))
 
@@ -116,10 +105,7 @@ def plot_soft(directory):
 
 def plot_double_y_data(filename: pd.DataFrame):
     """Plots the data with the time vs frequency and dissipation for 1 dataset"""
-    # sept_run_dir = single_experiment_processed.run(filename, c)
-    # soft_df = soft_p(sept_run_dir[7])
-
-    # name of axises
+    # name of axes
     x = filename['time (min)']  # time
     data1 = filename['f (Hz)']  # frequency
     data2 = filename['d (ppm)']  # dissipation

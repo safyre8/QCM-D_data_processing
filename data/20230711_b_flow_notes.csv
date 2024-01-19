@@ -1,0 +1,18 @@
+time (min),pump,stirrer,solution
+0,20,none,fb
+10,20,none,naci
+19,20,none,mgcl
+20,20,none,suv
+23,20,none,naci
+52,20,none,naci
+60,20,none,fb
+90,100,none,SEPT_add
+101.8166667,100,none,fb
+110.0166667,50,none,SEPT_add
+121.1666667,50,none,fb
+125,50,none,SEPT_add
+136,50,none,SEPT_add
+156.95,50,none,fb
+170,10,none,SEPT_add
+205.0166667,20,none,fb_wash
+256.8833333,100,none,fb

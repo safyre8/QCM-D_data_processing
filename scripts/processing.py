@@ -1,21 +1,9 @@
 import os
 import sys
-
 import pandas as pd
 from scripts.load_data import load_data
-# from scripts.overview_single_experiment import filename, c
-# TODO: make it so that all the chambers can be pulled out
-# TODO: make a directory to save all these files. Then average them.
-# TODO: can I make a table with all the saved information about the chambers.
-# TODO: GTP +/- ; SEPT (HEX/OCT) ; SOFTNESS PARAMETER; BINDING KINETICS ; THICKNESS; AMD (QCM-D)
-# TODO: make sure that the headers are saved in the equialibrium file
-# TODO: do all the data for the datasets
-
 
 qcm_dir, note_dir = load_data("data")
-# print(qcm_dir)
-save_dir = os.path.normpath(sys.path[1] + "/" + "data" + "/" + "data_protein")
-# Set variables for the (c) chamber:int. The overtones are set for 3, 5, 7, and 9.
 
 class single_experiment_processed:
     """" this class will run with one chamber and overtone number for a single file.
@@ -42,10 +30,13 @@ class single_experiment_processed:
                 'd (ppm)': de_set
             })
             sept_run_dir[n] = final_table
-            new_file_name = f"{dataset[0:-4]}_{c}_{n}.csv"
-            sept_run_dir[n].to_csv(os.path.join(save_dir, new_file_name), index=False)
 
-            # print(f"Result for n = {n}:", final_table)
+
+            # # # To save individual files per chamber and overtone!!!!
+            # save_dir = os.path.normpath(sys.path[1] + "/" + "data" + "/" + "data_protein")
+            # new_file_name = f"{dataset[0:-4]}_{c}_{n}.csv"
+            # sept_run_dir[n].to_csv(os.path.join(save_dir, new_file_name), index=False)
+
         num = list(sept_run_dir)
 
         print("==== Finished by converting the time and frequency to start at zero for overtones {}! ====".format(num))
@@ -56,7 +47,8 @@ class single_experiment_processed:
         """Takes a csv file to seperate out the time(Time), frequency (f), and dissipation (D) for a chamber (c) at the Harmonic of interest (n) to give an array with these columns"""
         # load the dataframe from the experimental directory
         new_df = qcm_dir[dataset]
-        # print(new_df)
+
+        #creates a directory per chamber (c) and overtone (n)
         desired_columns = [
             f"Time_{c} [s]",
             f"f{n}_{c} [Hz]",
@@ -64,17 +56,15 @@ class single_experiment_processed:
         ]
         filtered_table = new_df[desired_columns]
 
-        print(filtered_table)
         print("==== Filtered for chamber {} and overtone {} in the file: '{}'! ====".format(c, n, dataset))
         return filtered_table
 
     @staticmethod
-    def ave_slb_baseline(dataset: pd.DataFrame, t_base_s: float = 6., t_base_e: float = 8.):
+    def offset_baseline(dataset: pd.DataFrame, t_base_s: float = 6., t_base_e: float = 8.):
         """Takes the filtered dataset to convert the time from seconds to minutes and average the frequency and dissipation from the SLB baseline."""
 
         time_sec = dataset.iloc[:, 0]  # takes the first row from the filter_data, which is always time
         time_min = (time_sec / 60).round(2)  # convert the time into minutes
-        # print("==== Converted the time from seconds into minutes! ====")
 
         # set a range to find the average to normalize the frequency and dissipation channels across the entire dataset
         rows_in_range = (time_min >= t_base_s) & (time_min <= t_base_e)
@@ -83,7 +73,8 @@ class single_experiment_processed:
         f_avg = data_in_range.iloc[:, 1].mean()  # averaging over frequency
         d_avg = data_in_range.iloc[:, 2].mean()  # averaging over dissipation
 
-        norm_f = (dataset.iloc[:, 1] - f_avg) # 5 is the scaling for overtone 5
+        # to normalize the data for each overtone. Need to check of the machine does this!!!!!!
+        norm_f = (dataset.iloc[:, 1] - f_avg) #TODO: check the scaling factor # 5 is the scaling for overtone 5
         norm_d = dataset.iloc[:, 2] - d_avg
 
         norm_table = pd.DataFrame(data={
@@ -105,9 +96,9 @@ class single_experiment_processed:
     def eq_time_select(dataset: pd.DataFrame, c: int, n: int):
         """This function will take a data file, filtered and normalized, and the reference from the note file when septins are added (SEPT_add) and washed (fb_wash)"""
         # load and define the 2 datasets. The data file comes from the experimental data.
-        data_file = single_experiment_processed.ave_slb_baseline(single_experiment_processed.filter_data(dataset, c, n))
+        data_file = single_experiment_processed.offset_baseline(single_experiment_processed.filter_data(dataset, c, n))
         notes_file, note_file_name = single_experiment_processed.find_matching_notes(dataset)
-        print(f"{notes_file} as sept_start")
+
         # find the string of "SEPT_add" or "fb_wash" in the note dataframe to indicate the row that septins are add or washed
         condition_add = (notes_file['solution'] == "SEPT_add")
         condition_wash = (notes_file['solution'] == "fb_wash")
@@ -118,9 +109,7 @@ class single_experiment_processed:
 
         # Find the time in the row with the solution as "SEPT_add" or "fb_wash"
         SEPT_s = notes_file.loc[index_add[0], 'time (min)']
-
         SEPT_e = notes_file.loc[index_wash[0], 'time (min)']
-
         n_SEPT_s = pd.to_numeric(SEPT_s)
         n_SEPT_e = pd.to_numeric(SEPT_e)
 
@@ -128,13 +117,7 @@ class single_experiment_processed:
         print("==== Selected the data from the notes file for when protein (SEPT) was added to wash! ====")
         return filtered_df2
 
-
-
 #How to call processing
 # filename = "20230711_b_flow_slb.csv"
-# c = 4
-# print(filename)
-# df = single_experiment_processed.run(filename, c)
-# print(df)
-# print(soft_p(df))
-# print(soft_p(filename, c, n))
+# c = 1
+# print(single_experiment_processed.run(filename, c))

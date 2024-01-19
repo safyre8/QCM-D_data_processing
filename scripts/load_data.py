@@ -19,7 +19,9 @@ def convert_files(folder_dir):
         elif file_name.endswith(".txt"):
             data = pd.read_csv(file_path, sep=';')  # Assuming it's a tab-separated text file
             data.to_csv(os.path.join(folder_path, file_name[:-4] + ".csv"), index=False, sep=",")
+
 # print(convert_files("data"))
+
 def load_data(folder_dir):
     all_files = os.listdir(os.path.normpath(sys.path[1] + "/" + folder_dir))  # check that the system path is correct
     qcm_dir = {}  # tag slb is for the support lipid bilayer
@@ -41,11 +43,6 @@ def load_data(folder_dir):
     print("==== Found {} QCM-D and {} note file(s) in the directories! ====".format(num_qcm_dir, num_note_dir))
 
     return qcm_dir, note_dir
-#TODO: clean up the output by figuring out how to prevent the printing of all the now open files
-
-# print(load_data("data"))
-
-
 
 print("==== Loaded the experimental and note files! ====")
 

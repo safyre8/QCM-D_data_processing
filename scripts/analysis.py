@@ -7,7 +7,6 @@ from scripts.processing import single_experiment_processed
 # sept_run_dir = single_experiment_processed.run(filename, c)
 n_values = [3, 5, 7, 9]
 
-# n_values = [3, 5, 7, 9]
 def soft_p(dataset: pd.DataFrame):
     soft_para_dir = {}
 
@@ -42,18 +41,6 @@ def soft_p_overall(dataset: pd.DataFrame, n_values):
             f_df = dataset[overtone]['f (Hz)']
             d_df = dataset[overtone]['d (ppm)']
 
-            #select the first value of each column
-            # first_f_value = f_df.iloc[0]
-            # first_d_value = d_df.iloc[0]
-
-            #sum the last 5 values for each column
-            # last_f_values = sum(f_df.iloc[-5:]) / 5
-            # last_d_values = sum(d_df.iloc[-5:]) / 5
-
-            #calculate the difference between the first value and the average of the last 5
-            # f_delta = last_f_values - f_df
-            # d_delta = last_d_values - first_d_value
-
             #calculate the criterion for each overtone
             divid_f = f_df #/ overtone
             soft = d_df / - divid_f
@@ -86,8 +73,6 @@ def soft_p_overtone_5(dataset: pd.DataFrame):
             'd (10^-6)': d_df
             })
     soft_para_dir = new_table
-
-
     return soft_para_dir
 
 
@@ -97,7 +82,6 @@ def Sauerbrey_M_overall(dataset: pd.DataFrame, c):
     SC = 18 #ng/(cm2∙ Hz) is the mass sensitivity constant for a 5 MHz crystal
 
     last_f_values = dataset['f (Hz)'].iloc[-50:]
-
     f_delta =  last_f_values.mean() - dataset['f (Hz)'].iloc[1]
 
     return -SC * f_delta/5 #5 is the overtone

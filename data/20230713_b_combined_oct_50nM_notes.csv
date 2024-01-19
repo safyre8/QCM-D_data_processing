@@ -1,0 +1,15 @@
+time (min),pump,stirrer,solution
+0,on,on,fb
+2,off,on,fb
+10,on,on,naci
+11,off,on,naci
+20,off,on,suv
+36,on,on,naci
+37,off,on,naci
+50,on,on,fb
+51,off,on,fb
+60,off,on,SEPT_add
+60.45,off,off,sept
+100,on,on,fb_wash
+110,on,on,sb
+120,off,on,sb
